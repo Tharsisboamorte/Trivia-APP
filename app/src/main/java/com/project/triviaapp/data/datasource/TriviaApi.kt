@@ -8,12 +8,11 @@ interface TriviaApi {
     @GET("api_category.php")
     suspend fun getCategories(): CategoriesResponse
 
-    @GET("api.php?amount=1")
+    @GET("api.php?amount=1&")
     suspend fun getQuestion(
-        @Query("amount") amount: Int,
         @Query("difficulty") difficulty: String,
         @Query("type") type: String?,
         @Query("category") category: Int?,
-    ) : QuestionDto
+    ) : QuestionResponse
 
 }

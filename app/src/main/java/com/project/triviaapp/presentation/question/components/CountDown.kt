@@ -44,7 +44,8 @@ fun CountdownCircularProgressBar() {
             progress = countdown / 10f,
             modifier = Modifier.size(100.dp),
             color = LightBlue,
-            strokeWidth = 8.dp
+            strokeWidth = 8.dp,
+            trackColor = Color.Gray
         )
         Text(
             text = "$countdown",

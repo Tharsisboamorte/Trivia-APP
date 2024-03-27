@@ -3,12 +3,10 @@ package com.project.triviaapp.data.repository
 import com.project.triviaapp.data.datasource.CategoriesResponse
 import com.project.triviaapp.data.datasource.CategoryDto
 import com.project.triviaapp.data.datasource.QuestionDto
+import com.project.triviaapp.data.datasource.QuestionResponse
 import com.project.triviaapp.data.datasource.TriviaApi
 import com.project.triviaapp.di.AppModule
 import com.project.triviaapp.domain.repository.TriviaRepo
-import com.project.triviaapp.domain.util.Resource
-import com.project.triviaapp.domain.util.Resource.Error
-import com.project.triviaapp.domain.util.Resource.Success
 
 
 class TriviaRepoImpl(
@@ -16,6 +14,7 @@ class TriviaRepoImpl(
 ): TriviaRepo {
 
     private var cachedCategories = listOf<CategoryDto>()
+    private var cachedQuestions = listOf<QuestionDto>()
     override suspend fun getCategories(): CategoriesResponse {
         try {
             val response = api.getCategories()
@@ -28,23 +27,21 @@ class TriviaRepoImpl(
     }
 
     override suspend fun getQuestion(
-        amount: Int,
         difficulty: String,
         type: String?,
         category: Int?
-    ): Resource<QuestionDto> {
-        return try {
-            Success(
-                data = api.getQuestion(
-                    amount = amount,
-                    category = category,
-                    difficulty = difficulty,
-                    type = type
-                )
+    ): QuestionResponse {
+        try {
+            val response = api.getQuestion(
+                category = category,
+                difficulty = difficulty,
+                type = type
             )
-        } catch (e: Exception){
+            cachedQuestions = response.question
+            return response
+        } catch (e: Exception) {
             e.printStackTrace()
-            Error(e.message ?: "An unknown error occurred.")
+            throw e
         }
     }
 

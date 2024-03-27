@@ -19,7 +19,7 @@ class HomeVieModel(
         }
     }
 
-    val categoriesState: MutableState<List<CategoryDto>> = mutableStateOf(emptyList<CategoryDto>())
+    val categoriesState: MutableState<List<CategoryDto>> = mutableStateOf(listOf())
     private suspend fun getCategories(): List<CategoryDto> {
         return repository.getCategories().categories
     }

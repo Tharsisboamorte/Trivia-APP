@@ -6,5 +6,5 @@ sealed class Screens(val route: String) {
 
     object Rank: Screens(route = "ranking_screen")
 
-    object Question: Screens(route = "ranking_screen")
+    object Question: Screens(route = "question_screen")
 }
