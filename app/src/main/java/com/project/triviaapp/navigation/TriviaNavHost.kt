@@ -1,5 +1,3 @@
-@file:Suppress("UNCHECKED_CAST")
-
 package com.project.triviaapp.navigation
 
 import androidx.compose.runtime.Composable
@@ -13,7 +11,6 @@ import com.project.triviaapp.redux.TriviaState
 @Composable
 fun TriviaNavHost(
     navController: NavHostController,
-    state: TriviaState
 ) {
     NavHost(
         navController = navController,
@@ -22,12 +19,12 @@ fun TriviaNavHost(
         composable(
             route = Screens.Home.route
         ){
-            HomePage(state = state, navController = navController)
+            HomePage()
         }
         composable(
             route = Screens.Question.route
         ){
-            QuestionPage(state = state)
+            QuestionPage(state = TriviaState())
         }
         composable(
             route = Screens.Rank.route
