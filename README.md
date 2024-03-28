@@ -1,5 +1,5 @@
 ### TRIVIA APP
---
+
 Aplicativo que utiliza:
 
 - Open trivia Api
