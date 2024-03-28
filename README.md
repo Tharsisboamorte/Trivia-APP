@@ -1,4 +1,4 @@
-### TRIVIA APP
+# TRIVIA APP
 
 Aplicativo que utiliza:
 
