@@ -23,23 +23,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.project.triviaapp.navigation.Screens
+import com.project.triviaapp.presentation.home.HomeViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryCard(
     title: String,
-    bottomSheetState: BottomSheetScaffoldState,
+    viewModel: HomeViewModel,
+    id: Int,
+    navController: NavController
 ) {
-    val scope = rememberCoroutineScope()
 
     Card(
         modifier = Modifier
             .padding(start = 5.dp, end = 5.dp, bottom = 15.dp)
             .clickable {
-                scope.launch {
-                    bottomSheetState.bottomSheetState.expand()
-                }
+                viewModel.onCategorySelected(categoryId = id)
+                navController.navigate(Screens.UsersChoice.route)
             },
         shape = CardDefaults.elevatedShape,
         colors = CardDefaults.cardColors(
@@ -57,16 +60,5 @@ fun CategoryCard(
         ) {
             Text(text = title, style = MaterialTheme.typography.bodyLarge, color = Color.Gray)
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-fun CategoryCardPreview() {
-    Surface(
-        modifier = Modifier.wrapContentSize()
-    ) {
-        CategoryCard(title = "Geral", bottomSheetState = rememberBottomSheetScaffoldState())
     }
 }

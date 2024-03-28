@@ -15,4 +15,5 @@ interface TriviaRepo {
 
     fun getCategoryId(id: Int): CategoryDto?
 
+
 }

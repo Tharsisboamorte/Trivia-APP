@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.project.triviaapp.data.datasource.QuestionDto
 import com.project.triviaapp.data.repository.TriviaRepoImpl
+import com.project.triviaapp.presentation.home.HomeViewModel
+import com.project.triviaapp.presentation.userschoice.UsersChoiceViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,9 +26,9 @@ class QuestionViewModel(
     val questionState: MutableState<QuestionDto> = mutableStateOf(QuestionDto.empty())
     private suspend fun getQuestion(): List<QuestionDto> {
         return repository.getQuestion(
-            difficulty = "easy",
-            category = 22,
-            type = "multiple"
+            difficulty = UsersChoiceViewModel().difficultyState.value,
+            category = HomeViewModel().categoryStateId.value,
+            type = UsersChoiceViewModel().typeState.value
         ).question
     }
 }

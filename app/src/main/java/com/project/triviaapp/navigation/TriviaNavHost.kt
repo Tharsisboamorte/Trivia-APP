@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.project.triviaapp.presentation.home.HomePage
 import com.project.triviaapp.presentation.question.QuestionPage
+import com.project.triviaapp.presentation.ranking.RankPage
+import com.project.triviaapp.presentation.userschoice.UsersChoicePage
 
 @Composable
 fun TriviaNavHost(
@@ -18,7 +20,9 @@ fun TriviaNavHost(
         composable(
             route = Screens.Home.route
         ){
-            HomePage()
+            HomePage(
+                navController = navController
+            )
         }
         composable(
             route = Screens.Question.route
@@ -28,7 +32,12 @@ fun TriviaNavHost(
         composable(
             route = Screens.Rank.route
         ){
-
+            RankPage(navController = navController)
+        }
+        composable(
+            route = Screens.UsersChoice.route
+        ){
+            UsersChoicePage(navController = navController)
         }
     }
 }
