@@ -17,17 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun GameButton(
     text: String,
     textColor: Color = Color.White,
     onClick: (String) -> Unit,
-    correctAnswer: String,
 ) {
 
     Button(
-        onClick = { onClick(text) },
+        onClick = {
+            onClick(text)
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -35,7 +38,9 @@ fun GameButton(
             .defaultMinSize(minHeight = 54.dp),
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, color = Color.Gray),
-        colors = ButtonDefaults.buttonColors(Color.White),
+        colors = ButtonDefaults.buttonColors(
+           containerColor = Color.White
+        ),
     ) {
         Text(
             textAlign = TextAlign.Center,
@@ -46,8 +51,11 @@ fun GameButton(
 
 @Preview
 @Composable
-fun PreviewGameButton(){
+fun PreviewGameButton() {
     Surface {
-        GameButton(text = "Verdadeiro", onClick = {}, correctAnswer = "verdadeiro")
+        GameButton(
+            text = "Verdadeiro",
+            onClick = {},
+        )
     }
 }

@@ -27,7 +27,7 @@ fun TriviaNavHost(
         composable(
             route = Screens.Question.route
         ){
-            QuestionPage()
+            QuestionPage(navController = navController)
         }
         composable(
             route = Screens.Rank.route

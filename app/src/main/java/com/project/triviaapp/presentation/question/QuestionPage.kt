@@ -14,8 +14,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,15 +28,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import com.project.triviaapp.navigation.Screens
+import com.project.triviaapp.presentation.home.HomeViewModel
 import com.project.triviaapp.presentation.question.components.CountdownCircularProgressBar
 import com.project.triviaapp.presentation.question.components.GameButton
 import com.project.triviaapp.ui.theme.LightBlue
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun QuestionPage() {
+fun QuestionPage(
+    navController: NavController,
+) {
     val viewModel: QuestionViewModel = viewModel()
     val questionState = viewModel.questionState.value
+    val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val answers = mutableListOf<String>()
 
@@ -40,13 +54,19 @@ fun QuestionPage() {
 
     answers.shuffle()
 
-    Scaffold {
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
+            )
+        }
+    ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CountdownCircularProgressBar()
+            CountdownCircularProgressBar(coroutineScope)
             Spacer(modifier = Modifier.height(25.dp))
             Card(
                 modifier = Modifier
@@ -76,8 +96,15 @@ fun QuestionPage() {
                 items(answers) { index ->
                     GameButton(
                         text = index,
-                        onClick = { },
-                        correctAnswer = questionState.correctAnswer
+                        onClick = {
+                            if (index == questionState.correctAnswer) {
+                                coroutineScope.launch {
+                                    snackbarHostState.showSnackbar("A resposta está correta!")
+                                }
+                                coroutineScope.cancel()
+                                navController.navigate(Screens.Home.route)
+                            }
+                        },
                     )
                 }
             }

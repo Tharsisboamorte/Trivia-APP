@@ -22,13 +22,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.triviaapp.ui.theme.LightBlue
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun CountdownCircularProgressBar() {
+fun CountdownCircularProgressBar(
+    coroutineScope: CoroutineScope
+) {
     var countdown by remember { mutableIntStateOf(10) }
-    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         coroutineScope.launch {
@@ -63,6 +65,6 @@ fun CountdownCircularProgressBar() {
 @Composable
 fun PreviewCountDown() {
     Surface {
-        CountdownCircularProgressBar()
+        CountdownCircularProgressBar(rememberCoroutineScope())
     }
 }

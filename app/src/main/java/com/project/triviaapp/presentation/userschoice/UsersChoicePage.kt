@@ -28,6 +28,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.project.triviaapp.navigation.Screens
+import com.project.triviaapp.presentation.home.HomeViewModel
+import com.project.triviaapp.presentation.question.QuestionViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -35,6 +37,8 @@ fun UsersChoicePage(
     navController: NavController
 ) {
     val choicesModel: UsersChoiceViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()
+    val questionViewModel: QuestionViewModel = viewModel()
     val radioDifficultyOptions = listOf("Fácil", "Médio", "Difícil")
     val radioTypeOptions = listOf("Multipla escolha", "Verdadeiro ou Falso", "Ambos")
     var selectedDifficultyOption by remember { mutableStateOf(radioDifficultyOptions[0]) }
@@ -80,6 +84,7 @@ fun UsersChoicePage(
                                         choicesModel.onDifficultySelected("hard")
                                     }
                                 }
+
                             }
                         )
                         Text(
@@ -142,6 +147,11 @@ fun UsersChoicePage(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Button(onClick = {
+                    questionViewModel.requestQuestion(
+                        level = choicesModel.difficultyState.value,
+                        category = homeViewModel.categoryStateId.value,
+                        type = choicesModel.typeState.value
+                    )
                     navController.navigate(Screens.Question.route)
                 }) {
                     Text(text = "Gerar pergunta")
