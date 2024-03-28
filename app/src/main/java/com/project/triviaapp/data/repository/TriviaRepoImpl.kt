@@ -5,12 +5,12 @@ import com.project.triviaapp.data.datasource.CategoryDto
 import com.project.triviaapp.data.datasource.QuestionDto
 import com.project.triviaapp.data.datasource.QuestionResponse
 import com.project.triviaapp.data.datasource.TriviaApi
-import com.project.triviaapp.di.AppModule
+import com.project.triviaapp.di.NetworkModule
 import com.project.triviaapp.domain.repository.TriviaRepo
 
 
 class TriviaRepoImpl(
-    private val api: TriviaApi = AppModule.provideTriviaApi()
+    private val api: TriviaApi = NetworkModule.provideTriviaApi()
 ): TriviaRepo {
 
     private var cachedCategories = listOf<CategoryDto>()

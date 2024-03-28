@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.project.triviaapp.presentation.home.components.BottomNavBar
 import com.project.triviaapp.presentation.home.components.BottomSheetModalDifficulty
 import com.project.triviaapp.presentation.home.components.CategoryCard
@@ -37,9 +38,12 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomePage() {
-    val viewModel: HomeVieModel = viewModel()
+fun HomePage(
+    navController: NavController
+) {
+    val viewModel: HomeViewModel = viewModel()
     val categories = viewModel.categoriesState.value
+
     val scope = rememberCoroutineScope()
     val modalSheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.Hidden,
@@ -50,7 +54,11 @@ fun HomePage() {
     )
 
     BottomSheetScaffold(
-        sheetContent = { BottomSheetModalDifficulty() },
+        sheetContent = {
+            BottomSheetModalDifficulty(
+                scaffoldSheetState
+            )
+        },
         sheetPeekHeight = 50.dp,
         scaffoldState = scaffoldSheetState,
         sheetSwipeEnabled = true
@@ -68,7 +76,7 @@ fun HomePage() {
                 )
             },
             bottomBar = {
-                BottomNavBar()
+                BottomNavBar(navController = navController)
             },
         ) {
             if (categories.isNotEmpty()) {
@@ -89,7 +97,9 @@ fun HomePage() {
                         Spacer(modifier = Modifier.height(15.dp))
                         CategoryCard(
                             title = categories.name,
-                            bottomSheetState = scaffoldSheetState
+                            bottomSheetState = scaffoldSheetState,
+                            viewModel = viewModel,
+                            categoryId = categories.id
                         )
                     }
                 }

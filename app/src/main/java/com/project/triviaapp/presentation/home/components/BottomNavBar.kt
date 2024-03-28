@@ -19,10 +19,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.project.triviaapp.navigation.Screens
 import com.project.triviaapp.ui.theme.LightBlue
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(navController: NavController) {
     var selectedTab by remember { mutableStateOf(0) }
 
     val items = listOf(
@@ -35,12 +38,20 @@ fun BottomNavBar() {
             val isSelected = index == selectedTab
             NavigationBarItem(
                 selected = isSelected,
-                onClick = { selectedTab = index },
+                onClick = {
+                    if(selectedTab == 0){
+                        navController.navigate(Screens.Home.route)
+                    }else{
+                        navController.navigate(Screens.Rank.route)
+                    }
+                    selectedTab = index
+                },
                 icon = {
                     Icon(
                         imageVector = icon,
                         contentDescription = null,
-                        tint = if (isSelected) LightBlue else Color.Gray,)
+                        tint = if (isSelected) LightBlue else Color.Gray,
+                    )
 
                 },
                 alwaysShowLabel = false,
@@ -78,6 +89,6 @@ fun BottomNavBar() {
 @Composable
 fun PreviewBottomNavBar() {
     Surface(modifier = Modifier.fillMaxSize()) {
-        BottomNavBar()
+        BottomNavBar(rememberNavController())
     }
 }
